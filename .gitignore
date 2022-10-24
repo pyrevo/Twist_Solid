@@ -1,6 +1,9 @@
-.snakemake
+.snakemake/
 .tests/integration/.snakemake
+.cache/
+.java/
 
+genefuse.json
 .vscode
 .idea
 
