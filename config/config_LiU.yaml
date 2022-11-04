@@ -2,7 +2,7 @@ resources: "config/resources.yaml"
 samples: "samples.tsv"
 units: "units.tsv"
 
-default_container: "docker://hydragenetics/common:0.1.8"
+default_container: "docker://hydragenetics/common:0.1.9"
 
 trimmer_software: "fastp_pe"
 
@@ -69,11 +69,16 @@ bwa_mem:
   sa: "/mnt/WD1/ref/Uppsala/Data/BWA_0.7.10_refseq/hg19.with.mt.sa"
 
 bwa_mem_merge:
-  extra: "-c"
+  extra: "-c -p"
 
 cnvkit_batch:
   container: "docker://hydragenetics/cnvkit:0.9.9"
   normal_reference: "/mnt/WD1/ref/Twist/hydra_files/PoN/cnvkit_nextseq_36.cnn"
+  method: "hybrid"
+
+cnvkit_batch_hrd:
+  container: "docker://hydragenetics/cnvkit:0.9.9"
+  normal_reference_hrd: "/mnt/WD1/ref/Twist/hydra_files/PoN/cnvkit_nextseq_27_HRD.cnn"
   method: "hybrid"
 
 cnvkit_call:
@@ -87,10 +92,6 @@ cnv_html_report:
 
 cnvkit_scatter:
   container: "docker://hydragenetics/cnvkit:0.9.9"
-
-config_manta_t:
-  container: "docker://hydragenetics/manta:1.6.0"
-  extra: "--exome --callRegions /mnt/WD1/ref/Twist/hydra_files/bed/pool1_pool2.sort.merged.padded20.cnv200.hg19.split_fusion_genes.210608.bed.gz"
 
 cnv_tsv_report:
   del_1p19q_cn_limit: 1.4
@@ -116,27 +117,30 @@ filter_vcf:
 
 fusioncatcher:
   container: "docker://hydragenetics/fusioncatcher:1.33"
-  #container: "docker://hydragenetics/fusioncatcher:1.33"
   genome_path: "/mnt/WD1/ref/Twist/fusioncatcher/data/human_v102/"
 
 gatk_calculate_contamination:
   container: "docker://hydragenetics/gatk4:4.1.9.0"
 
-gatk_cnv_call_copy_ratio_segments:
+gatk_call_copy_ratio_segments:
   container: "docker://hydragenetics/gatk4:4.1.9.0"
 
-gatk_cnv_collect_allelic_counts:
+gatk_collect_allelic_counts:
   container: "docker://hydragenetics/gatk4:4.1.9.0"
   SNP_interval: "/mnt/WD1/ref/Twist/hydra_files/bed/gnomad_SNP_0.001_target.annotated.interval_list"
 
-gatk_cnv_collect_read_counts:
+gatk_collect_allelic_counts:
+  container: "docker://hydragenetics/gatk4:4.1.9.0"
+  SNP_interval: "/projects/wp1/nobackup/ngs/utveckling/Twist_DNA_DATA/bed/gnomad_SNP_0.001_target.annotated.interval_list"
+
+gatk_collect_read_counts:
   container: "docker://hydragenetics/gatk4:4.1.9.0"
 
-gatk_cnv_denoise_read_counts:
+gatk_denoise_read_counts:
   container: "docker://hydragenetics/gatk4:4.1.9.0"
   normal_reference: "/mnt/WD1/ref/Twist/hydra_files/PoN/gatk_cnv_nextseq_36.hdf5"
 
-gatk_cnv_model_segments:
+gatk_model_segments:
   container: "docker://hydragenetics/gatk4:4.1.9.0"
 
 gatk_get_pileup_summaries:
@@ -177,6 +181,10 @@ hotspot_report:
     - [30, "low", "yes"]
     - [0, "low", "not analyzable"]
 
+config_manta_t:
+  container: "docker://hydragenetics/manta:1.6.0"
+  extra: "--exome --callRegions /mnt/WD1/ref/Twist/hydra_files/bed/pool1_pool2.sort.merged.padded20.cnv200.hg19.split_fusion_genes.210608.bed.gz"
+
 manta_run_workflow_t:
   container: "docker://hydragenetics/manta:1.6.0"
 
@@ -205,6 +213,7 @@ multiqc:
         - "qc/picard_collect_hs_metrics/{sample}_{type}.HsMetrics.txt"
         - "qc/picard_collect_insert_size_metrics/{sample}_{type}.insert_size_metrics.txt"
         - "qc/samtools_stats/{sample}_{type}.samtools-stats.txt"
+        - "qc/gatk_calculate_contamination/{sample}_{type}.contamination.table"
     RNA:
       config: "config/multiqc_config_rna.yaml"
       included_unit_types: ["R"]
@@ -256,7 +265,7 @@ report_gene_fuse:
   min_unique_reads: 6
 
 samtools_merge_bam:
-  extra: "-c"
+  extra: "-c -p"
 
 scarhrd:
   container: "docker://hydragenetics/scarhrd:20200825"
@@ -279,7 +288,7 @@ svdb_merge:
   container: "docker://hydragenetics/svdb:2.6.0"
   cnv_callers:
     - "cnvkit"
-    - "gatk_cnv"
+    - "gatk"
   extra: "--pass_only" #Just merge the two vcf-files without merging regions
 
 svdb_query:
