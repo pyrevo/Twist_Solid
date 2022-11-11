@@ -131,7 +131,7 @@ gatk_collect_allelic_counts:
 
 gatk_collect_allelic_counts:
   container: "docker://hydragenetics/gatk4:4.1.9.0"
-  SNP_interval: "/projects/wp1/nobackup/ngs/utveckling/Twist_DNA_DATA/bed/gnomad_SNP_0.001_target.annotated.interval_list"
+  SNP_interval: "/mnt/WD1/ref/Twist/hydra_files/bed/gnomad_SNP_0.001_target.annotated.interval_list"
 
 gatk_collect_read_counts:
   container: "docker://hydragenetics/gatk4:4.1.9.0"
@@ -181,7 +181,7 @@ hotspot_report:
     - [30, "low", "yes"]
     - [0, "low", "not analyzable"]
 
-config_manta_t:
+manta_config_t:
   container: "docker://hydragenetics/manta:1.6.0"
   extra: "--exome --callRegions /mnt/WD1/ref/Twist/hydra_files/bed/pool1_pool2.sort.merged.padded20.cnv200.hg19.split_fusion_genes.210608.bed.gz"
 

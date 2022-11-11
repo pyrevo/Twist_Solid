@@ -12,3 +12,17 @@ genefuse.json
 *.swp
 
 venv
+RNA_DATA/
+DNA_DATA/
+
+alignment/
+annotation/
+biomarker/
+cnv_sv/
+fusions/
+prealignment/
+qc/
+snv_indels/
+
+samples.tsv
+units.tsv

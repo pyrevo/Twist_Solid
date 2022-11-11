@@ -10,7 +10,7 @@ conda activate Twist_Solid
 
 Create samples and units input files:
 ```
-hydra-genetics create-input-files -d ./DATA/DNA/ -n '_R([12]{1})\.' -b ATTACTCG --force
+hydra-genetics create-input-files -d DATA/DNA/ -n '_R([12]{1})\.' -b ATTACTCG --force
 hydra-genetics create-input-files -d DATA/RNA/ -t R -n '_R([12]{1})\.' --force
 ```
 
